@@ -4,9 +4,17 @@ Use the package with
 ```
 const { whisperer } = require('emoji-whisperer');
 var emojis = whisperer.whisper("Had an amazing workout today, feeling stronger than ever.")
-
 ```
 The result will be:
 ```
 [ '💪', '🤖🤖', '😎' ]
+```
+You can also provide an optional n parameter to specify how many emojis you want in the response. Note that the returning array is sorted by confidence. Best matching emojis return first. If n is greater than the number of matching emojis the length of the retuning array will only contain the matching emojis
+```
+const { whisperer } = require('emoji-whisperer');
+var emojis = whisperer.whisper("I can't wait for my birthday.", 6)
+```
+Response:
+```
+[ '🎉', '✋', '🕒', '👩‍❤', '⏳', '🤚' ]
 ```
