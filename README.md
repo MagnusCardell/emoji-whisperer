@@ -1,20 +1,59 @@
-Lightweight package to help you find the perfect emoji based on contextual analysis. Returns set of emojis that closely match the intended sentiment or meaning. Ideal for social media posts, chat bots, or any other text that can benefit with expressive emojis. Start transforming your text into a more engaging and emotive form with emoji-whisperer
+# 👀👉👉👉 Emoji-Whisperer
 
-Use the package with 
+Emoji Whisperer 😎😎😎💪🏽 is an npm package that lets you add a touch of fun and expressiveness to your text. This package can interpret the sentiment behind your text and suggest relevant emojis. 🙌
+
+## Installation
+
+```bash
+npm install emoji-whisperer
+```
+
+## Usage 
+The package provides two main methods - whisper and decorate. 🐐
+
+### **whisper(text, numberOfEmojis)**
+The **whisper** method returns an array of emojis that represent the sentiment of your text.
+
+Here's an example:
+
 ```
 const { whisperer } = require('emoji-whisperer');
-var emojis = whisperer.whisper("Had an amazing workout today, feeling stronger than ever.")
+
+// Basic usage
+let text = "I can't wait for my birthday.";
+let emojis = whisperer.whisper(text, 5);
+console.log(emojis); // Outputs: 😮,🤩🙌🏽, 🙏🥰, 💎🙌, ❤️
+
+// Different texts will generate different results
+let differentText = "The match was a nail-biting finish.";
+let differentEmojis = whisperer.whisper(differentText, 3);
+console.log(differentEmojis); // Outputs: 💖, 🔦👇, 👀⭕☝🏾
+
+// If no number of results is specified, the default is 3
+let defaultText = "The weather is perfect for a picnic.";
+let defaultEmojis = whisperer.whisper(defaultText);
+console.log(defaultEmojis); // Outputs: 👌👌, 🤘🏻, 🤌🏼
+
+// You can even try it with single words
+let singleWord = "Love";
+let singleWordEmojis = whisperer.whisper(singleWord);
+console.log(singleWordEmojis); // Outputs: ❤️❤️🙏🙏, 🙌🙌🙌💜💜💜😍😍, 😱😍🙌🏼, 😊🙌🎉, 💘
+
 ```
-The result will be:
-```
-[ '💪', '🤖🤖', '😎' ]
-```
-You can also provide an optional n parameter to specify how many emojis you want in the response. Note that the returning array is sorted by confidence. Best matching emojis return first. If n is greater than the number of matching emojis the length of the retuning array will only contain the matching emojis
+
+### **decorate(text, numberOfEmojis)**
+The **decorate** method takes your text and inserts the emojis throughout the sentence.  👌🏼,
+
+Here's an example:
 ```
 const { whisperer } = require('emoji-whisperer');
-var emojis = whisperer.whisper("I can't wait for my birthday.", 6)
+
+var decoratedText = whisperer.decorate("I can't wait for my birthday.", 5);
+console.log(decoratedText);  // I 😮 can't wait 🤩🙌🏽 for my 🙏🥰 birthday.
+
 ```
-Response:
-```
-[ '🎉', '✋', '🕒', '👩‍❤', '⏳', '🤚' ]
-```
+Enjoy adding an expressive flair to your text with Emoji Whisperer! 🥂😂👌
+
+## Notes
+- The numberOfEmojis parameter in both methods controls the number of emojis to generate or insert. It defaults to 3 if not specified. 👉👈
+- The decorate method inserts emojis at different positions in the sentence. The exact placement of emojis will depend on the length and structure of the text. 👏👏

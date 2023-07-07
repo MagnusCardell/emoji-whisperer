@@ -47,4 +47,17 @@ function whisper(searchQuery, n_results = 3) {
     let topEmojis = allEmojis.slice(0, n_results);
     return topEmojis.map(emo => meta[emo[0]]);
 }
-module.exports.whisperer = {whisper};
+
+function decorate(searchQuery, n_results=3){
+    emojis = whisper(searchQuery, n_results);
+    let words = searchQuery.split(' ');
+    let interspersed = words.map((word, index) => {
+        if (index % 2 === 0 && emojis[index]) {
+            return `${word} ${emojis[index]}`;
+        }
+        return word;
+    }).join(' ');
+    return interspersed;
+}
+
+module.exports.whisperer = {whisper, decorate};
