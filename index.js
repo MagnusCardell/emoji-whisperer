@@ -48,16 +48,43 @@ function whisper(searchQuery, n_results = 3) {
     return topEmojis.map(emo => meta[emo[0]]);
 }
 
-function decorate(searchQuery, n_results=3){
-    emojis = whisper(searchQuery, n_results);
-    let words = searchQuery.split(' ');
-    let interspersed = words.map((word, index) => {
-        if (index % 2 === 0 && emojis[index]) {
-            return `${word} ${emojis[index]}`;
+function decorate(searchQuery){
+    let sentences = searchQuery.split('.');  
+    let interspersed = sentences.map((sentence) => {
+        let words = sentence.split(' ');
+
+        let result = [];
+        let phrase = [];
+        words.forEach(word => {
+            if (stopwords.includes(word)) {
+                if (phrase.length > 0) {
+                    let phraseText = phrase.join(' ');
+                    let emojis = whisper(phraseText, 10);
+                    if(emojis.length == 0){
+                        result.push(`${phraseText}`);
+                    }
+                    else{
+                        let randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                        result.push(`${phraseText} ${randomEmoji}`);
+                    }
+                    phrase = [];
+                }
+                result.push(word);
+            } else {
+                phrase.push(word);
+            }
+        });
+        if (phrase.length > 0) {
+            let phraseText = phrase.join(' ');
+            let emojis = whisper(phraseText, 10);
+            let randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            result.push(`${phraseText} ${randomEmoji}`);
         }
-        return word;
-    }).join(' ');
+        return result.join(' ');
+    }).join('.');
+
     return interspersed;
 }
+
 
 module.exports.whisperer = {whisper, decorate};
