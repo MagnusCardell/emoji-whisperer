@@ -48,43 +48,93 @@ function whisper(searchQuery, n_results = 3) {
     return topEmojis.map(emo => meta[emo[0]]);
 }
 
-function decorate(searchQuery){
-    let sentences = searchQuery.split('.');  
-    let interspersed = sentences.map((sentence) => {
-        let words = sentence.split(' ');
 
-        let result = [];
-        let phrase = [];
+function calculateWordScores(phrases) {
+    let frequency = {};
+    let degree = {};
+    let wordScore = {};
+    
+    phrases.forEach(phrase => {
+        let numWords = phrase.length;
+        let words = phrase.split(' ');
+
         words.forEach(word => {
-            if (stopwords.includes(word)) {
-                if (phrase.length > 0) {
-                    let phraseText = phrase.join(' ');
-                    let emojis = whisper(phraseText, 10);
-                    if(emojis.length == 0){
-                        result.push(`${phraseText}`);
-                    }
-                    else{
-                        let randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                        result.push(`${phraseText} ${randomEmoji}`);
-                    }
-                    phrase = [];
-                }
-                result.push(word);
-            } else {
-                phrase.push(word);
-            }
+            frequency[word] = (frequency[word] || 0) + 1;
+            degree[word] = (degree[word] || 0) + numWords - 1;
         });
-        if (phrase.length > 0) {
-            let phraseText = phrase.join(' ');
-            let emojis = whisper(phraseText, 10);
-            let randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-            result.push(`${phraseText} ${randomEmoji}`);
-        }
-        return result.join(' ');
-    }).join('.');
+    });
 
-    return interspersed;
+    for (let word in frequency) {
+        wordScore[word] = degree[word] / frequency[word];
+    }
+    return wordScore;
 }
 
+function calculatePhraseScores(phrases, wordScores) {
+    let phraseScores = {};
+    phrases.forEach(phrase => {
+        let phraseScore = 0;
+        let words = phrase.split(' ');
+
+        words.forEach(word => {
+            phraseScore += wordScores[word];
+        });
+        phraseScores[phrase] = phraseScore;
+    });
+    return phraseScores;
+}
+
+function rake(text) {
+    let words = text.split(' ');
+    let phrases = [];
+    let phrase = '';
+
+    words.forEach(word => {
+        if (stopwords.includes(word)) {
+            if (phrase) {
+                phrases.push(phrase.trim());
+                phrase = '';
+            }
+        } else {
+            phrase += `${word} `;
+        }
+    });
+    if (phrase) {
+        phrases.push(phrase.trim());
+    }
+
+    let wordScores = calculateWordScores(phrases);
+    let phraseScores = calculatePhraseScores(phrases, wordScores);
+    let sortedPhrases = Object.entries(phraseScores);
+    sortedPhrases.sort((a, b) => b[1] - a[1]);
+    return sortedPhrases;
+}
+
+function decorate(searchQuery, emoji_density = 1, randomness = 1) {
+    if (randomness < 0 || randomness > 1) {
+        throw new Error("Randomness must be a value between 0 and 1.");
+    }
+
+    if (emoji_density < 0 || emoji_density > 1) {
+        throw new Error("Emoji density must be a value between 0 and 1.");
+    }
+
+    let phrases = rake(searchQuery);
+    let numPhrases = Math.max(1, Math.ceil(emoji_density * phrases.length));
+    let topPhrases = phrases.slice(0, numPhrases);
+    let emojis = topPhrases.map(phrase => {
+        let numEmojis = Math.max(1, Math.ceil(randomness * 10));
+        let emojis = whisper(phrase[0], numEmojis);
+        let randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        return { phrase: phrase[0], emoji: randomEmoji };
+    });
+    let result = searchQuery;
+    emojis.forEach(({ phrase, emoji }) => {
+        if(emoji){
+            result = result.replace(phrase, `${phrase} ${emoji}`);
+        }
+    });
+    return result;
+}
 
 module.exports.whisperer = {whisper, decorate};
