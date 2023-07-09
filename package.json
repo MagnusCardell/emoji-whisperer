@@ -1,15 +1,20 @@
 {
   "name": "emoji-whisperer",
-  "version": "1.0.2",
-  "description": "lightweight package to help you find the perfect emoji based on contextual analysis. Returns set of emojis that closely match the intended sentiment or meaning. Ideal for social media posts, chat bots, or any other text that can benefit with expressive emojis. Start transforming your text into a more engaging and emotive form with emoji-whisperer",
+  "version": "1.0.3",
+  "description": "Package to help you find the perfect emoji based on contextual analysis. Returns set of emojis that closely match the intended sentiment or meaning. Ideal for social media posts, chat bots, or any other text that can benefit with expressive emojis. Start transforming your text into a more engaging and emotive form with emoji-whisperer",
   "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MagnusCardell/emoji-whisperer.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "keywords": [
     "emoji",
+    "text-analytics",
+    "suggestion",
     "emoji-synonym",
     "emoji-analysis",
     "text-to-emoji",
@@ -26,12 +31,11 @@
     "emoji-translation",
     "emojis",
     "text",
-    "lightweight",
+    "emoji-generator",
     "social",
     "emotive",
     "engaging",
-    "transforming",
-    "start"
+    "transforming"
   ],
   "author": "Magnus Cardell",
   "license": "ISC",
