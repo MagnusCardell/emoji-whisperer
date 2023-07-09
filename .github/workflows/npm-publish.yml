@@ -10,7 +10,7 @@ on:
 
 jobs:
   npm:
-    name: publish
+    name: publish to npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
   
   github_p:
-        name: Publish to gp
+        name: publish to gp
         permissions:
             contents: read
             packages: write
@@ -42,7 +42,7 @@ jobs:
                 # Change publish registry
                 echo "$(jq '.publishConfig.registry = "https://npm.pkg.github.com"' package.json)" > package.json
                 # Add organisation scope to package name
-                echo "$( jq '.name = "@magnuscardell/zenfuse"' package.json )" > package.json
+                echo "$( jq '.name = "@magnuscardell/emoji-whisperer"' package.json )" > package.json
                 # And publish this boy 
                 npm publish --@magnuscardell:registry=https://npm.pkg.github.com
 
