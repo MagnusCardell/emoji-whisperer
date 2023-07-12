@@ -5,7 +5,7 @@ Emoji Whisperer 😎😎😎💪🏽 is an npm package that lets you add a touch
 ## Installation
 
 ```bash
-npm install emoji-whisperer
+npm install --save emoji-whisperer
 ```
 
 ## Usage 
