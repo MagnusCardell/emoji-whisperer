@@ -1,6 +1,6 @@
 {
   "name": "emoji-whisperer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Package to help you find the perfect emoji based on contextual analysis. Returns set of emojis that closely match the intended sentiment or meaning. Ideal for social media posts, chat bots, or any other text that can benefit with expressive emojis. Start transforming your text into a more engaging and emotive form with emoji-whisperer",
   "main": "index.js",
   "scripts": {},
